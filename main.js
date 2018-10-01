@@ -11,7 +11,7 @@ function displayResults(responseJson, maxResults) {
 	console.log(responseJson);
 	$('.js-results-list').empty();
 
-	for (let i = 0; i < responseJson.length & i < maxResults){
+	for (let i = 0; i < responseJson.length & i < maxResults; i++) {
 		$('.js-results-list').append(
 			`<li class="result-li">
 				<h3>${responseJson[i].name}</h3>
@@ -28,15 +28,17 @@ function getRepos(query, maxResults) {
 
 	const options = {
 		headers: new Headers({
-			"Accept": application/vnd.github.v3+json
+			"Accept": "application/vnd.github.v3+json"
 		})
 	};
 
 	fetch(url, options)
-		.then(response => if(response.ok){
-			return response.json();
-		} else {
-			throw new Error(response.statusText);
+		.then(response => {
+			if(response.ok){
+				return response.json();
+			} else {
+				throw new Error(response.statusText);
+			}
 		})
 		.then(responseJson => displayResults(responseJson, maxResults))
 		.catch(e => {
@@ -45,10 +47,14 @@ function getRepos(query, maxResults) {
 }
 
 function watchForm() {
-	$('form').submit(event => {
+	$('#js-form').submit(event => {
 		event.preventDefault();
 		const searchTerm = $('.js-search').val();
 		const maxResults = $('.js-max-results').val();
 		getRepos(searchTerm, maxResults);
+		$('.js-search').val("");
+		$('.js-max-results').val("");
 	});
 }
+
+$(watchForm);
