@@ -1,6 +1,6 @@
 'use strict';
 
-const searchEndPoint = 'https://api.github.com/users/:';
+const searchEndPoint = 'https://api.github.com/users/';
 
 /* function formatQuery(params) {
 	const queryTerm = Object.keys(params).map(key => `${key}=${params[key]}`);
@@ -11,10 +11,15 @@ function displayResults(responseJson, maxResults) {
 	console.log(responseJson);
 	$('.js-results-list').empty();
 
-	$('.js-results-list').append(
-		`
-		`
-		);
+	for (let i = 0; i < responseJson.length & i < maxResults){
+		$('.js-results-list').append(
+			`<li class="result-li">
+				<h3>${responseJson[i].name}</h3>
+				<a href="${responseJson[i].html_url}">${responseJson[i].html_url}</a>
+			</li>`
+			);
+	};
+	$('#results').removeClass('hidden');
 }
 
 function getRepos(query, maxResults) {
@@ -24,7 +29,7 @@ function getRepos(query, maxResults) {
 	const options = {
 		headers: new Headers({
 			"Accept": application/vnd.github.v3+json
-		});
+		})
 	};
 
 	fetch(url, options)
